@@ -23,7 +23,7 @@ copy over "drush" file to:
 C:\Program Files (x86)\DevDesktop\tools\
 
 ------------------------------
-optional extra config of drush
+optional extra config for drush
 ------------------------------
 setup drush to run outside doc root, adds uri optionally automatically
 //get user dir:
@@ -31,6 +31,11 @@ setup drush to run outside doc root, adds uri optionally automatically
 //http://drupal.stackexchange.com/questions/38347/drush-post-installation-where-can-i-find-drushrc-php
 then copy "aliases.drushrc.php" & "drushrc.php"to MY_USER_DIR/.drush/<here>
 and edit these as needed
+------------------------------
+optional - Run mysql / mysqldump from cmd/gitbash
+------------------------------
+copy over "mysql", "mysql.bat", "mysqldump" & "mysqldump.bat" files to: 
+C:\Program Files (x86)\DevDesktop\tools\
 ------------------------------
 
 --------

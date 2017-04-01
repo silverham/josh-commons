@@ -1,0 +1,5 @@
+#!/bin/sh
+
+#must use "winpty" as mysql won't interact properly with commandline
+
+winpty "C:\xampp\mysql\bin\mysql.exe" --defaults-file="C:\xampp\mysql\bin\my.ini" ${@}

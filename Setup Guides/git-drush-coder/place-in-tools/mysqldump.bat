@@ -1,0 +1,1 @@
+@"C:\xampp\mysql\bin\mysqldump.exe" --defaults-file="C:\xampp\mysql\bin\my.ini" %*
