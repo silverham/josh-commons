@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# dev desktop composer.bat file converted to "composer" bash file
+
+export PHP_ID="php5_6"
+
+export PATH="/c/Program Files (x86)/DevDesktop/$PHP_ID:$PATH"
+
+#set global composer folder to devdesktop
+export COMPOSER_HOME="/c/Program Files (x86)/DevDesktop/tools"
+
+export MY_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+php "$MY_SCRIPT_DIR/composer.phar" ${@}

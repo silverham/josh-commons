@@ -1,0 +1,95 @@
+Install: Dev desktop
+Set default to php 5.6 (composer requires 5.4 or higher and default acquia server is 5.6 so play safe)
+(open dev desktop -> Acquia Dev Desktop [top left] -> Config -> Default php version -> 5.6)
+
+set PHP_ID to 5_6 in C:\Program Files (x86)\DevDesktop\tools\drush.bat
+
+add "C:\Program Files (x86)\DevDesktop\php5_6" to %path%
+1. Right My computer in Explorer
+2. Properties
+3. Advanced system settings
+4. Evironmental settings
+5. find "path" in system variables -> edit
+6. add "C:\Program Files (x86)\DevDesktop\php5_6"
+7. ok out and restart to take affect (or use without restart command below until you do restart)
+
+== without restart ===
+> export PATH="/c/Program Files (x86)/DevDesktop/php5_6:$PATH"
+======================
+
+copy over "drush" file to:
+C:\Program Files (x86)\DevDesktop\tools\
+
+------------------------------
+optional extra config of drush
+------------------------------
+setup drush to run outside doc root, adds uri optionally automatically
+//get user dir:
+> drush ev 'print(drush_server_home());'
+//http://drupal.stackexchange.com/questions/38347/drush-post-installation-where-can-i-find-drushrc-php
+then copy "aliases.drushrc.php" & "drushrc.php"to MY_USER_DIR/.drush/<here>
+and edit these as needed
+------------------------------
+
+--------
+coder
+--------
+
+Composer setup:
+copy over "composer" file to:
+C:\Program Files (x86)\DevDesktop\tools\
+
+--------
+Coder - NOT GOVCMS / composer project
+--------
+
+@background
+http://drupal.stackexchange.com/questions/75990/how-to-use-coder-with-drush
+
+open gitbash prompt with admin rights:
+(C:\Users\jgcom\AppData\Local\Atlassian\SourceTree\git_local\git-bash.exe -> Right-click -> run as admin)
+> cd "/c/Program Files (x86)/DevDesktop/tools"
+> composer global require drupal/coder
+
+once installed:
+
+> phpcs --config-set installed_paths "/c/Program Files (x86)/DevDesktop/tools/vendor/drupal/coder/coder_sniffer"
+
+> phpcs --standard=Drupal,DrupalPractice --extensions=php,module,inc,install,test,profile,theme,js,css,info,txt,md ./docroot/sites/all/modules/custom/MY_MODULE/
+
+--------
+Coder - WITH GOVCMS / Acquia / composer project
+--------
+
+Download wget from https://eternallybored.org/misc/wget/
+(can get either 64 or 32 but have to rename wget64 to wget if you get 64 version)
+place wiget.exe in C:\Users\jgcom\AppData\Local\Atlassian\SourceTree\git_local\mingw32\bin
+(or C:\Program Files\Git\mingw64\bin\ ir using system git)
+
+run
+> which wget
+to ensure wget can be located by git bash
+
+cd to folder with vendor in it (e.g. gov cms project)
+> cd /c/path/to/my/repo
+
+> mkdir .git/hooks
+> ./setup
+(if failure - delete setup.lock and run setup again)
+Also ignore sed error - it works anyway
+
+check code errors:
+> phpcs --config-set installed_paths "/c/Projects/govcms-myclient/vendor/drupal/coder/coder_sniffer"
+
+> phpcs --standard=Drupal,DrupalPractice --extensions=php,module,inc,install,test,profile,theme,js,css,info,txt,md ./docroot/sites/all/modules/custom/MY_MODULE/
+
+=============
+Misc Dev notes:
+
+Setup file
+seems: sed -i '' -e "s|UPSTREAM=master|UPSTREAM=$UPSTREAM|g" "$PRECOMMIT"
+should be (no space): sed -i -e "s|UPSTREAM=master|UPSTREAM=$UPSTREAM|g" "$PRECOMMIT"
+
+and .git/hooks is not auto created on windows. (add php mkdir whatever command?)
+=============
+

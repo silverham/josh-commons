@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# dev desktop drush.bat converted to drush bash file
+
+export PHP_ID="php5_6"
+
+export DEVDESKTOP_DRUPAL_SETTINGS_DIR=$USERPROFILE/.acquia/DevDesktop/DrupalSettings
+export PATH="/c/Program Files (x86)/DevDesktop/common/msys/bin:/c/Program Files (x86)/DevDesktop/$PHP_ID:/c/Program Files (x86)/DevDesktop/mysql/bin:"$PATH
+
+export MY_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+php "$MY_SCRIPT_DIR/vendor/drush/drush/drush.php" --php="php.exe" ${@}
