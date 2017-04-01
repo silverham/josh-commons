@@ -1,3 +1,5 @@
+=== config setup for drush, composer, coder in git bash (and windows a little too) ===
+
 Install: Dev desktop
 Set default to php 5.6 (composer requires 5.4 or higher and default acquia server is 5.6 so play safe)
 (open dev desktop -> Acquia Dev Desktop [top left] -> Config -> Default php version -> 5.6)
@@ -36,9 +38,34 @@ coder
 --------
 
 Composer setup:
-copy over "composer" file to:
+copy over "composer" & "phpcs.bat" file to: 
 C:\Program Files (x86)\DevDesktop\tools\
 
+(phpcs is for cmd - optional - required for sublime coder setup though)
+
+--- submlime setup --
+@background https://github.com/mattwithoos/SublimeText3DrupalCoder
+https://www.drupal.org/docs/develop/development-tools/configuring-sublime-text
+coder: 
+1. copy DrupalCoder.sublime-build to %userprofile%\AppData\Roaming\Sublime Text 3\Packages\User
+2. Open up Sublime Text 3 and select Tools > Build System > Drupal Coder
+3. Open any Drupal file and hit CTRL+B on Windows
+
+settings:
+(sublime -> peferences -> settings -> user)
+{
+  "rulers": [80],
+  "tab_size": 2,
+  "translate_tabs_to_spaces": true,
+  "use_tab_stops": true,
+  "trim_automatic_white_space": true,
+  "trim_trailing_white_space_on_save": true,
+  "ensure_newline_at_eof_on_save": true,
+  "fallback_encoding": "UTF-8",
+  "default_line_ending": "unix",
+  "shift_tab_unindent": true,
+  "word_separators": "./\\()\\'-:,.;<>~!@#%^&*|+=[]{}`~?"
+}
 --------
 Coder - NOT GOVCMS / composer project
 --------
@@ -84,7 +111,7 @@ check code errors:
 > phpcs --standard=Drupal,DrupalPractice --extensions=php,module,inc,install,test,profile,theme,js,css,info,txt,md ./docroot/sites/all/modules/custom/MY_MODULE/
 
 =============
-Misc Dev notes:
+Misc Dev notes on govCMS acquia setup:
 
 Setup file
 seems: sed -i '' -e "s|UPSTREAM=master|UPSTREAM=$UPSTREAM|g" "$PRECOMMIT"
@@ -92,4 +119,3 @@ should be (no space): sed -i -e "s|UPSTREAM=master|UPSTREAM=$UPSTREAM|g" "$PRECO
 
 and .git/hooks is not auto created on windows. (add php mkdir whatever command?)
 =============
-
