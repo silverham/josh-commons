@@ -34,8 +34,22 @@ and edit these as needed
 ------------------------------
 optional - Run mysql / mysqldump from cmd/gitbash
 ------------------------------
-copy over "mysql", "mysql.bat", "mysqldump" & "mysqldump.bat" files to: 
+copy over "mysql", "mysql.bat", "mysqldump" & "mysqldump.bat" files to:
 C:\Program Files (x86)\DevDesktop\tools\
+
+OR use git bash alaises instead of non bat files
+(copy over ".bash_profile" to C:\users\myusername\<here>)
+
+Note: since have to use winpty simulate tty with mysql. The input commands are as follows:
+> mysql -u myuser mydb
+> source mydbdump file;
+
+OR
+> cmd //C "mysql -u root mydb < myfile.sql"
+
+Addtionally history cannot be retrieved in git bash, so workaround can be:
+> printf "show tables;" | cmd //C "mysql -u root -t temp"
+> printf "drop database temp; create database temp;" | cmd //C "mysql -u root -t temp"
 ------------------------------
 
 --------
@@ -43,7 +57,7 @@ coder
 --------
 
 Composer setup:
-copy over "composer" & "phpcs.bat" file to: 
+copy over "composer" & "phpcs.bat" file to:
 C:\Program Files (x86)\DevDesktop\tools\
 
 (phpcs is for cmd - optional - required for sublime coder setup though)
@@ -51,7 +65,7 @@ C:\Program Files (x86)\DevDesktop\tools\
 --- submlime setup --
 @background https://github.com/mattwithoos/SublimeText3DrupalCoder
 https://www.drupal.org/docs/develop/development-tools/configuring-sublime-text
-coder: 
+coder:
 1. copy DrupalCoder.sublime-build to %userprofile%\AppData\Roaming\Sublime Text 3\Packages\User
 2. Open up Sublime Text 3 and select Tools > Build System > Drupal Coder
 3. Open any Drupal file and hit CTRL+B on Windows
