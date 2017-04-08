@@ -1,12 +1,42 @@
 #!/bin/sh
 
-# dev desktop drush.bat converted to drush bash file
+## dev desktop drush.bat converted to drush bash file for git bash.
 
-export PHP_ID="php5_6"
+## Set PHP_ID if not already set.
+if [ -z ${PHP_ID+x} ]; then
+  ## echo "var is unset";
+  export PHP_ID="php5_6"
+#else
+  #echo "var is set to '$PHP_ID'";
+fi
+
+## Set environmental variables
+## PATH is used for system(), exec() etc.
 
 export DEVDESKTOP_DRUPAL_SETTINGS_DIR=$USERPROFILE/.acquia/DevDesktop/DrupalSettings
 export PATH="/c/Program Files (x86)/DevDesktop/common/msys/bin:/c/Program Files (x86)/DevDesktop/$PHP_ID:/c/Program Files (x86)/DevDesktop/mysql/bin:"$PATH
 
-export MY_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+MY_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-php "$MY_SCRIPT_DIR/vendor/drush/drush/drush.php" --php="php.exe" ${@}
+## Run the Dev Desktop SSH setup - optional for drush.
+## Remove lines with 1 "#" to activate the call to bat file.
+## You may want to edit the bat file and add a "at" symbol @ in front of each command,
+## (or add "@echo off") up top for less verbose output.
+SSH_AGENT_PARAMS_FILE="$USERPROFILE/.acquia/DevDesktop/ssh-agent-params.bat"
+
+## If file exists.
+#if [ -f "$SSH_AGENT_PARAMS_FILE" ]; then
+  ## Run parms file.
+  #"$SSH_AGENT_PARAMS_FILE"
+## else
+    ## echo "File does not exist"
+    ## echo $SSH_AGENT_PARAMS_FILE
+#fi
+
+## Note on running code passed in via parameters:
+## To run the code, use single quotes as speech marks are stripped in git bash
+## Else if the command has a comma in it, you will get a syntax error.
+## For example: drush php-eval 'foreach(array(0,1,2) as $e) { echo $e; }'
+
+# Run drush now.
+php "$MY_SCRIPT_DIR/vendor/drush/drush/drush.php" --php="php.exe" "$@"
