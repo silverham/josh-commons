@@ -38,5 +38,8 @@ SSH_AGENT_PARAMS_FILE="$USERPROFILE/.acquia/DevDesktop/ssh-agent-params.bat"
 ## Else if the command has a comma in it, you will get a syntax error.
 ## For example: drush php-eval 'foreach(array(0,1,2) as $e) { echo $e; }'
 
-# Run drush now.
+## Get the number of columns in the terminal and export so drush fills whole window.
+export COLUMNS=$(tput cols)
+
+## Run drush now.
 php "$MY_SCRIPT_DIR/vendor/drush/drush/drush.php" --php="php.exe" "$@"
