@@ -1,0 +1,28 @@
+#!/bin/sh
+
+## dev desktop php.exe converted to php bash file for git bash.
+
+## Set PHP_ID if not already set.
+if [ -z ${PHP_ID+x} ]; then
+  ## echo "var is unset";
+  export PHP_ID="php5_6"
+#else
+  #echo "var is set to '$PHP_ID'";
+fi
+
+## Set environmental variables
+## PATH is used for system(), exec() etc.
+
+export DEVDESKTOP_DRUPAL_SETTINGS_DIR=$USERPROFILE/.acquia/DevDesktop/DrupalSettings
+export PATH="/c/Program Files (x86)/DevDesktop/common/msys/bin:/c/Program Files (x86)/DevDesktop/$PHP_ID:/c/Program Files (x86)/DevDesktop/mysql/bin:"$PATH
+
+# Get current directory.
+MY_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+## Get the number of columns in the terminal and export so php fills whole window.
+## Not tested to be actually needed in this file, but drush needed in git bash 
+## (it's already set in bash drush file). There shouldn't be any harm setting here though.
+export COLUMNS=$(tput cols)
+
+## Run PHP now
+php "$@"
