@@ -1,0 +1,51 @@
+#!/bin/sh
+
+#this file directory
+basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+
+#### start custom code ####
+current_dir=$(pwd)
+
+## declare an array variable of possible FE folders
+declare -a frontend_source_folders=('' "frontend-source" "static" "prototype")
+ 
+## now loop through the above array
+for i in "${frontend_source_folders[@]}"
+do
+
+  ## if $i is empty AND gulp file exists in current folder
+  if [ ! -n "$i" ] && [ -f "$current_dir/gulpfile.js" ]; then
+    # break for loop, gulp can run in current folder.
+    break
+  fi
+   
+  ## If file exists.
+  if [ -f "$current_dir/$i/gulpfile.js" ]; then
+    ## change current Dir to that folder so gulp runs.
+    cd "$current_dir/$i"
+    # use first matching folder, break for loop.
+    break
+  ## else
+      ## echo "File does not exist"
+  fi
+done
+#### end custom code ####
+
+case `uname` in
+    *CYGWIN*) basedir=`cygpath -w "$basedir"`;;
+esac
+
+if [ -x "$basedir/node" ]; then
+  "$basedir/node"  "$basedir/node_modules/gulp/bin/gulp.js" "$@"
+  ret=$?
+else 
+  node  "$basedir/node_modules/gulp/bin/gulp.js" "$@"
+  ret=$?
+fi
+
+#### start custom code ####
+## change back to the starting folder before exiting.
+cd $current_dir
+#### end custom code ####
+
+exit $ret
