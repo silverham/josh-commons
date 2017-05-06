@@ -1,0 +1,47 @@
+Drupal-8-composer-intructions
+
+Docs: https://www.drupal.org/docs/develop/using-composer/using-composer-to-manage-drupal-site-dependencies
+
+The below downloads the latest stable.
+
+windows/linux
+composer create-project drupal-composer/drupal-project:8.x-dev my_site_name_dir --stability dev --no-interaction --prefer-source
+
+MAX_PATH error? try:
+composer create-project drupal-composer/drupal-project:8.x-dev my_site_name_dir --stability dev --no-interaction --prefer-source
+
+WHY:
+- "--prefer-source" checks out the repo so MAX_PATH - 260 chars is less likely to meet during installation.
+- also skips "_" issue in folder name.
+
+-- multi site --
+
+$sites = array(
+  'mysite.com' => 'mysitefolder',
+  'josh.drupal.build.localtest.me' => 'joshgraham.id.au',
+  'test.josh.drupal.build.localtest.me' => 'test.joshgraham.id.au',
+);
+
+sites/sites.example.php -> sites/sites.php
+
+-- vhost -- 
+
+<VirtualHost *:80>
+	DocumentRoot "C:\Projects\josh_repos\personal-website-new\build\web"
+	ServerName josh.drupal.build.localtest.me
+	ErrorLog "logs/josh.drupal.build.localtest.me-error.log"
+	CustomLog "logs/josh.drupal.build.localtest.me-access.log" common
+	<Directory "C:\Projects\josh_repos\personal-website-new\build\web">
+		Options +FollowSymLinks -Indexes
+		AllowOverride All
+    Allow from all
+		Require all granted
+	</Directory>
+</VirtualHost>
+
+--opcache xampp windows --
+http://naiwik.com/php-opcode-caching-not-enabled-xampp-windows-10
+1) Open the Php.ini file , it can be found in Local-Disk (c:) >> Xampp >> php >> php.ini
+2) Add the below code at the bottom of php.ini file
+3) zend_extension = "C:\xampp\php\ext\php_opcache.dll"
+4) Save the file and restart the apcahe server
