@@ -1,15 +1,15 @@
 === config setup for drush, composer, coder in git bash (and windows a little too) ===
 
 Install: Dev desktop
-Set default to php 5.6 (composer requires 5.4 or higher and default acquia server is 5.6 so play safe)
-(open dev desktop -> Acquia Dev Desktop [top left] -> Config -> Default php version -> 5.6)
+Set default to php 7.0 (or 5_6 for < Drupal 7.50)
+(open dev desktop -> Acquia Dev Desktop [top left] -> Config -> Default php version -> 7.0)
 
-set PHP_ID to 5_6 in C:\Program Files (x86)\DevDesktop\drush\drush.bat
+set PHP_ID to 7_0 in C:\Program Files (x86)\DevDesktop\drush\drush.bat (drush folder may be called "tools" also)
 
 ======================
 
 copy over "drush" & "php" file to:
-C:\Program Files (x86)\DevDesktop\drush\
+C:\Program Files (x86)\DevDesktop\drush\  (drush folder may be called "tools" also)
 
 ------------------------------
 optional extra config for drush
@@ -47,7 +47,7 @@ coder
 
 Composer setup:
 copy over "composer" & "phpcs.bat" file to:
-C:\Program Files (x86)\DevDesktop\drush\
+C:\Program Files (x86)\DevDesktop\drush\ (may be called "tools" also)
 
 (phpcs is for cmd - optional - required for sublime coder setup though)
 
@@ -146,6 +146,3 @@ in .git/info/attributes
 == normalise working files: (warning - removes uncommited chnages) ==
 git ls-files -z | xargs -0 rm
 git checkout .
-
-git config core.autocrlf true
-git config core.eol crlf

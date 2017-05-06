@@ -2,8 +2,46 @@
 
 #old
 #dir=$(d=${0%[/\\]*}; cd "$d"; cd "../squizlabs/php_codesniffer/scripts" && pwd)
-#new command relative to outside vendor in dev desktop
-dir=$(d=${0%[/\\]*}; cd "$d"; cd "./vendor/squizlabs/php_codesniffer/scripts" && pwd)
+#new command relative to COMPSOER_HOME or outside vendor in dev desktop
+
+##export COMPOSER_HOME="C:\Program Files (x86)\DevDesktop\tools"
+
+MY_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+## Set COMPOSER_HOME if not already set try dev desktop one.
+if [ -z ${COMPOSER_HOME+x} ]; then
+  if [ -f "$USERPROFILE/AppData/Roaming/Composer/vendor/squizlabs/php_codesniffer/scripts/phpcs" ]; then
+    ## file exists
+    dir="$USERPROFILE/AppData/Roaming/Composer/vendor/squizlabs/php_codesniffer/scripts"
+  elif [ -f "$MY_SCRIPT_DIR/vendor/squizlabs/php_codesniffer/scripts/phpcs" ]; then
+    dir="$MY_SCRIPT_DIR/vendor/squizlabs/php_codesniffer/scripts"
+  fi
+else
+  if [ -f "$COMPOSER_HOME/vendor/squizlabs/php_codesniffer/scripts/phpcs" ]; then
+    dir="$COMPOSER_HOME/vendor/squizlabs/php_codesniffer/scripts"
+  fi
+fi
+
+## if dir wasn't set
+if [ -z ${dir+x} ]; then
+  ## echo "var is unset";
+  echo "phpcs not found. RUN:"
+  echo "------------------------"
+  echo "composer global require drupal/coder"
+  echo "------------------------"
+  echo "to download it. Trying in current dir anyway...."
+  dir=$(d=${0%[/\\]*}; cd "$d"; cd "./vendor/squizlabs/php_codesniffer/scripts" && pwd)
+fi
+
+## Set PHP_ID if not already set.
+if [ -z ${PHP_ID+x} ]; then
+  ## echo "var is unset";
+  ## If drupal less than 7.5 - then use php 5.6
+  ## export PHP_ID="php5_6"
+  export PHP_ID="php7_0"
+#else
+  #echo "var is set to '$PHP_ID'";
+fi
 
 # See if we are running in Cygwin by checking for cygpath program
 if command -v 'cygpath' >/dev/null 2>&1; then

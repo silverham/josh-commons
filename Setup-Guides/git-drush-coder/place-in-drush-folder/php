@@ -5,7 +5,9 @@
 ## Set PHP_ID if not already set.
 if [ -z ${PHP_ID+x} ]; then
   ## echo "var is unset";
-  export PHP_ID="php5_6"
+  ## If drupal less than 7.5 - then use php 5.6
+  ## export PHP_ID="php5_6"
+  export PHP_ID="php7_0"
 #else
   #echo "var is set to '$PHP_ID'";
 fi

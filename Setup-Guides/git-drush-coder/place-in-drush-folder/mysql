@@ -2,4 +2,8 @@
 
 #must use "winpty" as mysql won't interact properly with commandline
 
+## xampp version (default - different port to desktop)
 winpty "C:\xampp\mysql\bin\mysql.exe" --defaults-file="C:\xampp\mysql\bin\my.ini" ${@}
+
+## dev desktop version (different port to xampp)
+#winpty "C:\Program Files (x86)\DevDesktop\mysql\bin\mysql.exe" --defaults-file="C:\Program Files (x86)\DevDesktop\mysql\my.cnf"

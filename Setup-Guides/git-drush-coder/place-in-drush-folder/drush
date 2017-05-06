@@ -5,7 +5,9 @@
 ## Set PHP_ID if not already set.
 if [ -z ${PHP_ID+x} ]; then
   ## echo "var is unset";
-  export PHP_ID="php5_6"
+  ## If drupal less than 7.5 - then use php 5.6
+  ## export PHP_ID="php5_6"
+  export PHP_ID="php7_0"
 #else
   #echo "var is set to '$PHP_ID'";
 fi
@@ -42,4 +44,33 @@ SSH_AGENT_PARAMS_FILE="$USERPROFILE/.acquia/DevDesktop/ssh-agent-params.bat"
 export COLUMNS=$(tput cols)
 
 ## Run drush now.
-php "$MY_SCRIPT_DIR/vendor/drush/drush/drush.php" --php="php.exe" "$@"
+## Set COMPOSER_HOME if not already set try dev desktop one.
+if [ -z ${COMPOSER_HOME+x} ]; then
+  ## If file exists
+  if [ -f "$USERPROFILE/AppData/Roaming/Composer/vendor/drush/drush/drush" ]; then
+    ##  Try "proper" drush script
+    BIN_TARGET="$USERPROFILE/AppData/Roaming/Composer/vendor/drush/drush/drush"
+  elif [ -f "$MY_SCRIPT_DIR/vendor/drush/drush/drush" ]; then
+    ## fallback to devdesktop "proper" drush
+    BIN_TARGET="$MY_SCRIPT_DIR/vendor/drush/drush/drush"
+  elif [ -f "$MY_SCRIPT_DIR/vendor/drush/drush/drush.php" ]; then
+    ## fallback to devdesktop drush.php
+    BIN_TARGET="$MY_SCRIPT_DIR/vendor/drush/drush/drush.php"
+  fi
+else
+  if [ -f "$COMPOSER_HOME/vendor/drush/drush/drush" ]; then
+    BIN_TARGET="$COMPOSER_HOME/vendor/drush/drush/drush"
+  fi
+fi
+
+## if dir wasn't set
+if [ -z ${BIN_TARGET+x} ]; then
+  ## echo "var is unset";
+  echo "drush not found. RUN:"
+  echo "------------------------"
+  echo "composer global require drush/drush:8.*"
+  echo "------------------------"
+  echo "to download it. Trying in current dir anyway...."
+  BIN_TARGET="$MY_SCRIPT_DIR/vendor/drush/drush/drush"
+fi
+php "$BIN_TARGET" --php="php.exe" "$@"
