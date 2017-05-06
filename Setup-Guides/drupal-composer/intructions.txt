@@ -7,15 +7,14 @@ The below downloads the latest stable.
 windows/linux
 composer create-project drupal-composer/drupal-project:8.x-dev my_site_name_dir --stability dev --no-interaction --prefer-source
 
-MAX_PATH error? try:
+MAX_PATH error? (fixed in .8.3 though) try:
 composer create-project drupal-composer/drupal-project:8.x-dev my_site_name_dir --stability dev --no-interaction --prefer-source
 
 WHY:
 - "--prefer-source" checks out the repo so MAX_PATH - 260 chars is less likely to meet during installation.
 - also skips "_" issue in folder name.
 
-UPDATE: PHP 7.1 on windows should fix this issue.
-
+UPDATE: PHP 7.1 on windows should also fix this issue.
 
 -- multi site --
 
@@ -53,7 +52,6 @@ http://naiwik.com/php-opcode-caching-not-enabled-xampp-windows-10
 opcache.enable=1 <-- may need to set this.
 5)) Save the file and restart the apcahe server
 
-
 # Quick Reference commands
 
 ## Pre setup
@@ -75,14 +73,15 @@ opcache.enable=1 <-- may need to set this.
 - updates
 
 Update just the template - not drupal
-composer update drupal-composer/drupal-scaffold (if installed via - drupal-composer/drupal-project)
-composer update drupal/core --with-dependencies  --with-dependencies (core)
-composer update drupal/modulename --with-dependencies (module)
+
+`composer update drupal-composer/drupal-scaffold` (if installed via - drupal-composer/drupal-project)
+`composer update drupal/core --with-dependencies` (update core)
+`composer update drupal/modulename --with-dependencies` (update module)
 
 - get another developer's updates;
-composer install
+`composer install`
 
-- if PHP errors, ignore requirements (not should dev on same php version as each other and prod)
+- if PHP errors, ignore requirements (though should dev on same php version as each other and prod)
 
 `composer install --ignore-platform-reqs`
 
@@ -93,19 +92,19 @@ composer install --no-dev (--no-dev to stop an development packages getting inst
 
 Uninstall first!
 
-composer remove drupal/modulename
+`composer remove drupal/modulename`
 
 - Install
 
-composer require drupal/honeypot
+`composer require drupal/honeypot`
 
 (specific dev version - warning stops composer udpate)
-composer require drupal/honeypot:dev-1.x#dfa710e
+`composer require drupal/honeypot:dev-1.x#dfa710e`
 
 Don't forget to enable using drupal/drush afterwards.
 
 Development module only - use --dev (not used on prod)
-composer require --dev drupal/devel
+`composer require --dev drupal/devel`
 
 
 @see https://www.drupal.org/docs/develop/using-composer/using-composer-to-manage-drupal-site-dependencies
@@ -118,4 +117,9 @@ Other helpful things:
 If merge conflict happens on feature branch e.g. composoer.lock is conflicted. regenerate it!
 
 composer update --lock
+=======
+ON PROD:
+composer install --no-dev (--no-dev to stop an development packages getting installed - note, lock file must be present)
 
+@see https://www.drupal.org/docs/develop/using-composer/using-composer-to-manage-drupal-site-dependencies
+@see https://www.drupal.org/docs/8/update/update-procedure-in-drupal-8
