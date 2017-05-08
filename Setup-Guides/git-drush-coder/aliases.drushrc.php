@@ -3,9 +3,23 @@
 // Add drush aliases so we can do this from any directory
 // drush @mysite en devel -y
 
+// If a multi site is used (thus two aliases to same folder)
+// only the root will be set.
+// to use a default site place a "sites/default/drushrc.php" file
+// and set $options['uri'] = 'http://example.com';
+// see https://github.com/drush-ops/drush/issues/87#issuecomment-169266833
+
 $pre_aliases = array(
-  'mysite' => array(
+  'mybigsite' => array(
     'root' => 'C:/Projects/mysite',
+    'uri' => 'http://myproject.build.localtest.me',
+  ),
+  'mysmallsite' => array(
+    'root' => 'C:/Projects/mysite',
+    'uri' => 'http://myproject.build.localtest.me',
+  ),
+  'myothersite' => array(
+    'root' => 'C:/Projects/myothersite',
     'uri' => 'http://myproject.build.localtest.me',
   ),
 );
