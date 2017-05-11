@@ -55,7 +55,7 @@ C:\Program Files (x86)\DevDesktop\drush\ (may be called "tools" also)
 @background https://github.com/mattwithoos/SublimeText3DrupalCoder
 https://www.drupal.org/docs/develop/development-tools/configuring-sublime-text
 coder:
-1. copy DrupalCoder.sublime-build to %userprofile%\AppData\Roaming\Sublime Text 3\Packages\User
+1. copy DrupalCoder_CHECK.sublime-build (And/or FIX) to %userprofile%\AppData\Roaming\Sublime Text 3\Packages\User
 2. Open up Sublime Text 3 and select Tools > Build System > Drupal Coder
 3. Open any Drupal file and hit CTRL+B on Windows
 
@@ -113,10 +113,16 @@ cd to folder with vendor in it (e.g. gov cms project)
 (if failure - delete setup.lock and run setup again)
 Also ignore sed error - it works anyway
 
-check code errors:
+add to standards:
 > phpcs --config-set installed_paths "/c/Projects/govcms-myclient/vendor/drupal/coder/coder_sniffer"
 
+check code errors:
 > phpcs --standard=Drupal,DrupalPractice --extensions=php,module,inc,install,test,profile,theme,js,css,info,txt,md ./docroot/sites/all/modules/custom/MY_MODULE/
+
+autofix code errors
+> phpcbf --standard=Drupal,DrupalPractice --extensions=php,module,inc,install,test,profile,theme,js,css,info,txt,md ./docroot/sites/all/modules/custom/MY_MODULE/
+
+NOTEL: add "--no-patch" on windows cmd to use php instead of "patch" program which is not OOTB.
 
 =============
 Misc Dev notes on govCMS acquia setup:
