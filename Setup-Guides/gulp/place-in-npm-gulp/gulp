@@ -1,6 +1,4 @@
 #!/bin/sh
-
-#this file directory
 basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
 
 #### start custom code ####
@@ -8,25 +6,35 @@ current_dir=$(pwd)
 
 ## declare an array variable of possible FE folders
 declare -a frontend_source_folders=('' "frontend-source" "static" "prototype")
- 
+
 ## now loop through the above array
 for i in "${frontend_source_folders[@]}"
 do
-
-  ## if $i is empty AND gulp file exists in current folder
-  if [ ! -n "$i" ] && [ -f "$current_dir/gulpfile.js" ]; then
-    # break for loop, gulp can run in current folder.
-    break
-  fi
-   
-  ## If file exists.
-  if [ -f "$current_dir/$i/gulpfile.js" ]; then
-    ## change current Dir to that folder so gulp runs.
-    cd "$current_dir/$i"
-    # use first matching folder, break for loop.
-    break
-  ## else
-      ## echo "File does not exist"
+  ## if $i is empty 
+  if [ ! -n "$i" ]; then
+    ## for each file
+    for f in $current_dir/gulpfile*; do
+      ## If file exists.
+      if [ -e "$f" ]; then
+        # break for loop, gulp can run in current folder.
+        break
+      fi
+    done
+  else
+    ## echo "$i contains something"
+    ## for each file
+    for f in $current_dir/$i/gulpfile*; do
+    
+      ## If file exists.
+      if [ -e "$f" ]; then
+        ## change current Dir to that folder so gulp runs.
+        cd "$current_dir/$i"
+        # use first matching folder, break for loop.
+        break
+      ## else
+          ## echo "File does not exist"
+      fi
+    done
   fi
 done
 #### end custom code ####
@@ -36,16 +44,10 @@ case `uname` in
 esac
 
 if [ -x "$basedir/node" ]; then
-  "$basedir/node"  "$basedir/node_modules/gulp/bin/gulp.js" "$@"
+  "$basedir/node"  "$basedir/node_modules/gulp-cli/bin/gulp.js" "$@"
   ret=$?
 else 
-  node  "$basedir/node_modules/gulp/bin/gulp.js" "$@"
+  node  "$basedir/node_modules/gulp-cli/bin/gulp.js" "$@"
   ret=$?
 fi
-
-#### start custom code ####
-## change back to the starting folder before exiting.
-cd $current_dir
-#### end custom code ####
-
 exit $ret

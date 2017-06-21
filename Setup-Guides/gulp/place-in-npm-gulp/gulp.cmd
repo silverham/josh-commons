@@ -1,5 +1,5 @@
 @IF EXIST "%~dp0\node.exe" (
-  "%~dp0\node.exe"  "%~dp0\node_modules\gulp\bin\gulp.js" %*
+  "%~dp0\node.exe"  "%~dp0\node_modules\gulp-cli\bin\gulp.js" %*
 ) ELSE (
   REM #### start custom code ####
   REM ## don't display commands we are running.
@@ -14,12 +14,12 @@
   
   REM foreach folder, see if a gulpfile is inside, if so change directory into that folder so gulp runs.
   FOR %%f IN (%frontend_source_folders%) DO (
-    REM ## if first time run and gulp file exists.
-    if !first_run!==1 IF EXIST "%cd%/gulpfile.js" (
+    REM ## if first time run and gulpfile* exists.
+    if !first_run!==1 IF EXIST "%cd%/gulpfile*.<" (
       set first_run=0
       goto :endforloop
     )
-    IF EXIST "%cd%/%%f/gulpfile.js" (
+    IF EXIST "%cd%/%%f/gulpfile*.<" (
       cd "%cd%/%%f/"
     )
   )
@@ -28,7 +28,7 @@
   REM #### end custom code ####
   @SETLOCAL
   @SET PATHEXT=%PATHEXT:;.JS;=;%
-  node  "%~dp0\node_modules\gulp\bin\gulp.js" %*
+  node  "%~dp0\node_modules\gulp-cli\bin\gulp.js" %*
 )
 REM #### start custom code ####
 REM ## set back to folder we were in.
