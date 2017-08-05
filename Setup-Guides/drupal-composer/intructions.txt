@@ -52,3 +52,21 @@ http://naiwik.com/php-opcode-caching-not-enabled-xampp-windows-10
 ; Determines if Zend OPCache is enabled
 opcache.enable=1 <-- may need to set this.
 5)) Save the file and restart the apcahe server
+
+
+# Quick Referecen commands
+
+- check what is out of date: "composer outdated" or "drush ups"
+
+- updates
+
+Update just the template - not drupal
+composer update drupal-composer/drupal-scaffold (if installed via - drupal-composer/drupal-project)
+composer update drupal/core --with-dependencies  --with-dependencies (core)
+composer update drupal/modulename --with-dependencies (module)
+ON PROD:
+composer install --no-dev (--no-dev to stop an development packages getting installed - note, lock file must be present)
+
+@see https://www.drupal.org/docs/develop/using-composer/using-composer-to-manage-drupal-site-dependencies
+@see https://www.drupal.org/docs/8/update/update-procedure-in-drupal-8
+
