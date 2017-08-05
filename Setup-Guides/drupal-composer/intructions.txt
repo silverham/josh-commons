@@ -14,6 +14,9 @@ WHY:
 - "--prefer-source" checks out the repo so MAX_PATH - 260 chars is less likely to meet during installation.
 - also skips "_" issue in folder name.
 
+UPDATE: PHP 7.1 on windows should fix this issue.
+
+
 -- multi site --
 
 $sites = array(
@@ -44,4 +47,8 @@ http://naiwik.com/php-opcode-caching-not-enabled-xampp-windows-10
 1) Open the Php.ini file , it can be found in Local-Disk (c:) >> Xampp >> php >> php.ini
 2) Add the below code at the bottom of php.ini file
 3) zend_extension = "C:\xampp\php\ext\php_opcache.dll"
-4) Save the file and restart the apcahe server
+4) 
+[opcache]
+; Determines if Zend OPCache is enabled
+opcache.enable=1 <-- may need to set this.
+5)) Save the file and restart the apcahe server
