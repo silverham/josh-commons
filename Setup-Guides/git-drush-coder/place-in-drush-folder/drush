@@ -47,13 +47,13 @@ export COLUMNS=$(tput cols)
 ## Set COMPOSER_HOME if not already set try dev desktop one.
 if [ -z ${COMPOSER_HOME+x} ]; then
   ## If file exists
-  if [ -f "$USERPROFILE/AppData/Roaming/Composer/vendor/drush/drush/drush.php" ]; then
+  if [ -f "$USERPROFILE/AppData/Roaming/Composer/vendor/drush/drush/drush" ]; then
     ## Run drush php script.
-    ## Note: not using "drush" script as it fails on updb with file/volume incorrect error.
-    BIN_TARGET="$USERPROFILE/AppData/Roaming/Composer/vendor/drush/drush/drush.php"
-  elif [ -f "$MY_SCRIPT_DIR/vendor/drush/drush/drush.php" ]; then
+    ## Note: not using "drush.php" script as it fails on updb with file/volume incorrect error.
+    BIN_TARGET="$USERPROFILE/AppData/Roaming/Composer/vendor/drush/drush/drush"
+  elif [ -f "$MY_SCRIPT_DIR/vendor/drush/drush/drush" ]; then
     ## fallback to devdesktop drush.php
-    BIN_TARGET="$MY_SCRIPT_DIR/vendor/drush/drush/drush.php"
+    BIN_TARGET="$MY_SCRIPT_DIR/vendor/drush/drush/drush"
   fi
 else
   if [ -f "$COMPOSER_HOME/vendor/drush/drush/drush" ]; then
@@ -71,4 +71,5 @@ if [ -z ${BIN_TARGET+x} ]; then
   echo "to download it. Trying in current dir anyway...."
   BIN_TARGET="$MY_SCRIPT_DIR/vendor/drush/drush/drush"
 fi
+
 php "$BIN_TARGET" --php="php.exe" "$@"
