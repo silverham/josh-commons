@@ -27,7 +27,7 @@ $sites = array(
 
 sites/sites.example.php -> sites/sites.php
 
--- vhost -- 
+-- vhost --
 
 <VirtualHost *:80>
 	DocumentRoot "C:\Projects\josh_repos\personal-website-new\build\web"
@@ -47,14 +47,28 @@ http://naiwik.com/php-opcode-caching-not-enabled-xampp-windows-10
 1) Open the Php.ini file , it can be found in Local-Disk (c:) >> Xampp >> php >> php.ini
 2) Add the below code at the bottom of php.ini file
 3) zend_extension = "C:\xampp\php\ext\php_opcache.dll"
-4) 
+4)
 [opcache]
 ; Determines if Zend OPCache is enabled
 opcache.enable=1 <-- may need to set this.
 5)) Save the file and restart the apcahe server
 
 
-# Quick Referecen commands
+# Quick Reference commands
+
+## Pre setup
+
+- Parallel downloads
+
+`composer global require hirak/prestissimo`
+
+- Update composer to latest version.
+
+`composer self-update`
+
+- Install or update drush globally.
+
+`composer global require drush/drush:8.x composer` `global update drush/drush:8.x`
 
 - check what is out of date: "composer outdated" or "drush ups"
 
@@ -64,9 +78,44 @@ Update just the template - not drupal
 composer update drupal-composer/drupal-scaffold (if installed via - drupal-composer/drupal-project)
 composer update drupal/core --with-dependencies  --with-dependencies (core)
 composer update drupal/modulename --with-dependencies (module)
+
+- get another developer's updates;
+composer install
+
+- if PHP errors, ignore requirements (not should dev on same php version as each other and prod)
+
+`composer install --ignore-platform-reqs`
+
 ON PROD:
 composer install --no-dev (--no-dev to stop an development packages getting installed - note, lock file must be present)
 
+- Remove module
+
+Uninstall first!
+
+composer remove drupal/modulename
+
+- Install
+
+composer require drupal/honeypot
+
+(specific dev version - warning stops composer udpate)
+composer require drupal/honeypot:dev-1.x#dfa710e
+
+Don't forget to enable using drupal/drush afterwards.
+
+Development module only - use --dev (not used on prod)
+composer require --dev drupal/devel
+
+
 @see https://www.drupal.org/docs/develop/using-composer/using-composer-to-manage-drupal-site-dependencies
 @see https://www.drupal.org/docs/8/update/update-procedure-in-drupal-8
+@see https://www.jeffgeerling.com/blog/2017/tips-managing-drupal-8-projects-composer
+
+
+Other helpful things:
+
+If merge conflict happens on feature branch e.g. composoer.lock is conflicted. regenerate it!
+
+composer update --lock
 
