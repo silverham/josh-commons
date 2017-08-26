@@ -15,9 +15,15 @@ $build_folders = array('docroot', 'build');
 //optionally add build folder(e.g. docroot) & process to $aliases array
 $aliases = array();
 foreach ($pre_aliases as $pre_alias_id => $pre_alias_val) {
+  // Set drupal context outside build folder (e.g. docroot).
   foreach ($build_folders as $folder) {
-    if (file_exists($pre_alias_val['root'] . '/' . $folder)) {
-      $pre_alias_val['root'] = $pre_alias_val['root'] . '/' . $folder;
+    // Composer project docroot/web.
+    if (file_exists("{$pre_alias_val['root']}/{$folder}/web")) {
+      $pre_alias_val['root'] = "{$pre_alias_val['root']}/{$folder}/web";
+      break;
+    }
+    elseif (file_exists("{$pre_alias_val['root']}/{$folder}")) {
+      $pre_alias_val['root'] = "{$pre_alias_val['root']}/{$folder}";
       break;
     }
   }

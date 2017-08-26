@@ -15,8 +15,12 @@ foreach ($pre_aliases as $alias) {
     $options['uri'] = $alias['uri'];
     // Set drupal context outside build folder (e.g. docroot).
     foreach ($build_folders as $folder) {
-      if (file_exists($alias['root'] . '/' . $folder)) {
-        $options['root'] = $alias['root'] . '/' . $folder;
+      // Composer project docroot/web.
+      if (file_exists("{$alias['root']}/{$folder}/web")) {
+        $options['root'] = "{$alias['root']}/{$folder}/web";
+      }
+      elseif (file_exists("{$alias['root']}/{$folder}")) {
+        $options['root'] = "{$alias['root']}/{$folder}";
       }
     }
   }
