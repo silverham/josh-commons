@@ -51,31 +51,46 @@ foreach ($pre_aliases as $alias) {
         $options['root'] = "{$alias['root']}/{$folder}";
       }
     }
-    // Then set the drush uri to the uri in the alias.
-    // if it's usable "single" site.
-    if ($root_dups[$alias['root']] === TRUE) {
-      $options['uri'] = $alias['uri'];
-    }
-    else {
-      // Duplicate alias!
-      // If --uri or -l manully passed, then drush will handle uri.
-      // TL;DR; Do nothing here.
-      $args = drush_get_arguments();
-      if (!drush_get_option('uri') && !drush_sitealias_valid_alias_format($args[0])) {
-        $cwd = drush_cwd();
-        // If not, are inside the site specific folder?
-        // if (DIRECTORY_SEPARATOR is "\", and it is windows convert it.)
-        if (drush_is_windows() && strpos(DIRECTORY_SEPARATOR, '\\') !== FALSE) {
-          $cwd = str_replace('/', '\\', $cwd);
+    // If --uri or -l manully passed, then drush will handle uri.
+    // TL;DR; Do nothing here.
+    $args = drush_get_arguments();
+    if (!drush_get_option('uri') && !drush_sitealias_valid_alias_format($args[0])) {
+      // Before blinding setting the alias,
+      // check if we in a site specific folder first.
+      $cwd = drush_cwd();
+      // If (DIRECTORY_SEPARATOR is "\", and it is windows convert it),
+      // required for drush_site_path().
+      if (drush_is_windows() && strpos(DIRECTORY_SEPARATOR, '\\') !== FALSE) {
+        $cwd = str_replace('/', '\\', $cwd);
+      }
+      // Site is a string of the site path, false if not valid.
+      if ($site = drush_site_path($cwd)) {
+        // Yes - use that uri.
+        $uri = drush_sitealias_site_dir_from_filename($site . '/settings.php');
+        $options['uri'] = $uri;
+      }
+      else {
+        // Not in a specific site folder, can we fall back one to one alias?
+        // But lets only do this if this is only actually one one site.
+        // Simulating the bleow line - it's too slow - 60sec to process.
+        // @codingStandardsIgnoreStart
+        // $sites = _drush_find_local_sites_in_sites_folder($options['root']);
+        // @codingStandardsIgnoreEnd
+        $sites = array();
+        $base_path = $options['root'] . '/sites';
+        $files = drush_scan_directory($base_path, '/settings\.php/', array('.', '..', 'CVS', 'all'), 0, 1, 'filename', 1);
+        foreach ($files as $filename => $info) {
+          if ($info->basename == 'settings.php') {
+            $sites[] = 'mypath#uriplaceholder';
+          }
         }
-        // Site is a string of the site path, false if not valid.
-        if ($site = drush_site_path($cwd)) {
-          // Yes - use that uri.
-          $uri = drush_sitealias_site_dir_from_filename($site . '/settings.php');
-          $options['uri'] = $uri;
+        // End _drush_find_local_sites_in_sites_folder() simulation.
+        if ((count($sites) === 1) && ($root_dups[$alias['root']] === TRUE)) {
+          $options['uri'] = $alias['uri'];
         }
         else {
-          drush_log('WARNING! The current root has two or more aliases but none specified in the paramaters or no alias used! Pleaee Specify one, e.g. "--uri="mysite.com" or @mysite or run from [web_root]/sites/mysite/ folder. Continuing...', 'warning');
+          // Nope, duplicate aliases or duplicate sites so no fallback can work.
+          drush_log('WARNING! The current root has two or more aliases/sites but none specified in the paramaters or no alias used! Please Specify one, e.g. "--uri="mysite.com" or @mysite or run from [web_root]/sites/mysite/ folder. Continuing...', 'warning');
         }
       }
     }
