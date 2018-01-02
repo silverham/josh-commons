@@ -2,12 +2,22 @@
 
 ## dev desktop drush.bat converted to drush bash file for git bash.
 
+# Get current directory of this script.
+MY_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 ## Set PHP_ID if not already set.
 if [ -z ${PHP_ID+x} ]; then
   ## echo "var is unset";
   ## If drupal less than 7.5 - then use php 5.6
   ## export PHP_ID="php5_6"
-  export PHP_ID="php7_0"
+  
+  ## Use latest PHP version we have.
+  ## \ runs real ls, no alias, with / appended to folders
+  for i in `\ls "$(cd "$MY_SCRIPT_DIR" && cd .. && pwd)" | grep "php[0-9]" | sort -rV`; do
+    export PHP_ID="$i"
+    break
+  done;
+
 #else
   #echo "var is set to '$PHP_ID'";
 fi
@@ -17,8 +27,6 @@ fi
 
 export DEVDESKTOP_DRUPAL_SETTINGS_DIR=$USERPROFILE/.acquia/DevDesktop/DrupalSettings
 export PATH="/c/Program Files (x86)/DevDesktop/common/msys/bin:/c/Program Files (x86)/DevDesktop/$PHP_ID:/c/Program Files (x86)/DevDesktop/mysql/bin:"$PATH
-
-MY_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ## Run the Dev Desktop SSH setup - optional for drush.
 ## Remove lines with 1 "#" to activate the call to bat file.

@@ -2,12 +2,22 @@
 
 # dev desktop composer.bat file converted to "composer" bash file
 
+# Get current directory of this script.
+MY_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 ## Set PHP_ID if not already set.
 if [ -z ${PHP_ID+x} ]; then
   ## echo "var is unset";
   ## If drupal less than 7.5 - then use php 5.6
   ## export PHP_ID="php5_6"
-  export PHP_ID="php7_0"
+  
+  ## Use latest PHP version we have.
+  ## \ runs real ls, no alias, with / appended to folders
+  for i in `\ls "$(cd "$MY_SCRIPT_DIR" && cd .. && pwd)" | grep "php[0-9]" | sort -rV`; do
+    export PHP_ID="$i"
+    break
+  done;
+
 #else
   #echo "var is set to '$PHP_ID'";
 fi
@@ -17,7 +27,5 @@ export PATH="/c/Program Files (x86)/DevDesktop/$PHP_ID:$PATH"
 ## set global composer folder to devdesktop
 ## removed since we admin rights - use deault user profile instead
 ## export COMPOSER_HOME="/c/Program Files (x86)/DevDesktop/tools"
-
-MY_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 php "$MY_SCRIPT_DIR/composer.phar" ${@}
