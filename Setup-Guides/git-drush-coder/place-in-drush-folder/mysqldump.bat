@@ -1,5 +1,8 @@
 @ECHO OFF
 
+REM Don't make our environment variable changes persist after script finishes.
+SETLOCAL
+
 REM xampp version (default - different port to desktop)
 @"C:\xampp\mysql\bin\mysqldump.exe" --defaults-file="C:\xampp\mysql\bin\my.ini" %*
 

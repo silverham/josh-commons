@@ -10,7 +10,7 @@ if [ -z ${PHP_ID+x} ]; then
   ## echo "var is unset";
   ## If drupal less than 7.5 - then use php 5.6
   ## export PHP_ID="php5_6"
-  
+
   ## Use latest PHP version we have.
   ## \ runs real ls, no alias, with / appended to folders
   for i in `\ls "$(cd "$MY_SCRIPT_DIR" && cd .. && pwd)" | grep "php[0-9]" | sort -rV`; do
@@ -28,4 +28,14 @@ export PATH="/c/Program Files (x86)/DevDesktop/$PHP_ID:$PATH"
 ## removed since we admin rights - use deault user profile instead
 ## export COMPOSER_HOME="/c/Program Files (x86)/DevDesktop/tools"
 
-php "$MY_SCRIPT_DIR/composer.phar" ${@}
+if !(type "php.exe" &> /dev/null); then
+  echo php.exe was not found.
+  echo Available folder names are: \(export PHP_ID=foldername\)
+  # Start with d is a folder
+  # Match php_NUM_NUM
+  ls "$(cd "$MY_SCRIPT_DIR" && cd .. && pwd)" -l | grep ^d | grep php[0-9]_[0-9]
+  # Exit with error code 1
+  exit 1
+else
+  php.exe "$MY_SCRIPT_DIR/composer.phar" ${@}
+fi

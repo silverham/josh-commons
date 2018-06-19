@@ -5,6 +5,9 @@ REM SET BIN_TARGET=%~dp0/../squizlabs/php_codesniffer/scripts/phpcbf
 REM NEW COMPOSER HOME or relative to outside vendor
 REM SET BIN_TARGET=%~dp0/vendor/squizlabs/php_codesniffer/scripts/phpcbf
 
+REM Don't make our environment variable changes persist after script finishes.
+SETLOCAL
+
 IF "%COMPOSER_HOME%"=="" (
   REM echo NOT SET
   IF EXIST "%USERPROFILE%/AppData/Roaming/Composer/vendor/squizlabs/php_codesniffer/scripts/phpcbf" (
@@ -41,4 +44,16 @@ IF "%PHP_ID%"=="" (
 
 @SET PATH=C:\Program Files (x86)\DevDesktop\%PHP_ID%;%PATH%
 
-php %BIN_TARGET% %*
+REM check if php.exe was found
+WHERE php.exe >nul 2>nul
+IF %ERRORLEVEL% NEQ 0 (
+  ECHO php.exe wasn't found in PATH
+  ECHo The following php folders are available ^(SET PHP_ID=foldername^)
+  REM Finds folders with phpNUM_NUM* (1 or more numbers after)
+  dir "C:\Program Files (x86)\DevDesktop" /A | findstr ^<DIR^> | findstr php[0-9]_[0-9]*$
+  REM Exit with error code 1
+  exit /b 1
+) ELSE (
+  REM Run the command
+  php.exe %BIN_TARGET% %*
+)

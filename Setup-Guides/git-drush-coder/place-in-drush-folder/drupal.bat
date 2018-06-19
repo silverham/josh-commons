@@ -39,27 +39,24 @@ IF EXIST "%USERPROFILE%\.acquia\DevDesktop\ssh-agent-params.bat" (
 IF "%COMPOSER_HOME%"=="" (
   REM echo NOT SET
   REM file exists
-  IF EXIST "%USERPROFILE%/AppData/Roaming/Composer/vendor/drush/drush/drush" (
+  IF EXIST "%USERPROFILE%/AppData/Roaming/Composer/vendor/drupal/console/bin/drupal" (
     REM Run drush php script.
     REM Note: not using "drush" script as it fails on updb with file/volume incorrect error.
-    SET BIN_TARGET="%USERPROFILE%/AppData/Roaming/Composer/vendor/drush/drush/drush"
-  ) ELSE IF EXIST "%~dp0vendor/drush/drush/drush" (
-    REM fallback to devdesktop drush.php
-    SET BIN_TARGET="%~dp0vendor/drush/drush/drush"
+    SET BIN_TARGET="%USERPROFILE%/AppData/Roaming/Composer/vendor/drupal/console/bin/drupal"
   )
 ) ELSE (
-  IF EXIST "%COMPOSER_HOME%/vendor/drush/drush/drush" (
-    SET BIN_TARGET="%COMPOSER_HOME%/vendor/drush/drush/drush"
+  IF EXIST "%COMPOSER_HOME%/vendor/drupal/console/bin/drupal" (
+    SET BIN_TARGET="%COMPOSER_HOME%/vendor/drupal/console/bin/drupal"
   )
 )
 
 IF %BIN_TARGET%=="" (
   echo drush not found. RUN:
   echo ------------------------
-  echo composer global require drush/drush:8.*
+  echo composer global require drupal/console
   echo ------------------------
   echo to download it. Trying in current dir anyway....
-  SET BIN_TARGET="%~dp0vendor/drush/drush/drush"
+  SET BIN_TARGET="%~dp0vendor/drupal/console/bin/drupal"
 )
 
 REM check if php.exe was found
