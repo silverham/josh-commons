@@ -11,15 +11,15 @@ MY_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ## Set COMPOSER_HOME if not already set try dev desktop one.
 if [ -z ${COMPOSER_HOME+x} ]; then
-  if [ -f "$USERPROFILE/AppData/Roaming/Composer/vendor/squizlabs/php_codesniffer/scripts/phpcs" ]; then
+  if [ -f "$USERPROFILE/AppData/Roaming/Composer/vendor/squizlabs/php_codesniffer/bin/phpcs" ]; then
     ## file exists
-    dir="$USERPROFILE/AppData/Roaming/Composer/vendor/squizlabs/php_codesniffer/scripts"
-  elif [ -f "$MY_SCRIPT_DIR/vendor/squizlabs/php_codesniffer/scripts/phpcs" ]; then
-    dir="$MY_SCRIPT_DIR/vendor/squizlabs/php_codesniffer/scripts"
+    dir="$USERPROFILE/AppData/Roaming/Composer/vendor/squizlabs/php_codesniffer/bin"
+  elif [ -f "$MY_SCRIPT_DIR/vendor/squizlabs/php_codesniffer/bin/phpcs" ]; then
+    dir="$MY_SCRIPT_DIR/vendor/squizlabs/php_codesniffer/bin"
   fi
 else
-  if [ -f "$COMPOSER_HOME/vendor/squizlabs/php_codesniffer/scripts/phpcs" ]; then
-    dir="$COMPOSER_HOME/vendor/squizlabs/php_codesniffer/scripts"
+  if [ -f "$COMPOSER_HOME/vendor/squizlabs/php_codesniffer/bin/phpcs" ]; then
+    dir="$COMPOSER_HOME/vendor/squizlabs/php_codesniffer/bin"
   fi
 fi
 
@@ -31,7 +31,7 @@ if [ -z ${dir+x} ]; then
   echo "composer global require drupal/coder"
   echo "------------------------"
   echo "to download it. Trying in current dir anyway...."
-  dir=$(d=${0%[/\\]*}; cd "$d"; cd "./vendor/squizlabs/php_codesniffer/scripts" && pwd)
+  dir=$(d=${0%[/\\]*}; cd "$d"; cd "./vendor/squizlabs/php_codesniffer/bin" && pwd)
 fi
 
 ## Set PHP_ID if not already set.

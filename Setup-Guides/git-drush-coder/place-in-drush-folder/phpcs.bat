@@ -3,22 +3,22 @@ setlocal DISABLEDELAYEDEXPANSION
 REM OLD
 REM SET BIN_TARGET=%~dp0/../squizlabs/php_codesniffer/scripts/phpcs
 REM NEW COMPOSER HOME or relative to outside vendor
-REM SET BIN_TARGET=%~dp0/vendor/squizlabs/php_codesniffer/scripts/phpcs
+REM SET BIN_TARGET=%~dp0/vendor/squizlabs/php_codesniffer/bin/phpcs
 
 REM Don't make our environment variable changes persist after script finishes.
 SETLOCAL
 
 IF "%COMPOSER_HOME%"=="" (
   REM echo NOT SET
-  IF EXIST "%USERPROFILE%/AppData/Roaming/Composer/vendor/squizlabs/php_codesniffer/scripts/phpcs" (
+  IF EXIST "%USERPROFILE%/AppData/Roaming/Composer/vendor/squizlabs/php_codesniffer/bin/phpcs" (
     REM file exists
-    SET BIN_TARGET="%USERPROFILE%/AppData/Roaming/Composer/vendor/squizlabs/php_codesniffer/scripts/phpcs"
-  ) ELSE IF EXIST "%~dp0vendor/squizlabs/php_codesniffer/scripts/phpcs" (
-    SET BIN_TARGET="%~dp0vendor/squizlabs/php_codesniffer/scripts/phpcs"
+    SET BIN_TARGET="%USERPROFILE%/AppData/Roaming/Composer/vendor/squizlabs/php_codesniffer/bin/phpcs"
+  ) ELSE IF EXIST "%~dp0vendor/squizlabs/php_codesniffer/bin/phpcs" (
+    SET BIN_TARGET="%~dp0vendor/squizlabs/php_codesniffer/bin/phpcs"
   )
 ) ELSE (
-  IF EXIST "%COMPOSER_HOME%/vendor/squizlabs/php_codesniffer/scripts/phpcs" (
-    SET BIN_TARGET="%COMPOSER_HOME%/vendor/squizlabs/php_codesniffer/scripts/phpcs"
+  IF EXIST "%COMPOSER_HOME%/vendor/squizlabs/php_codesniffer/bin/phpcs" (
+    SET BIN_TARGET="%COMPOSER_HOME%/vendor/squizlabs/php_codesniffer/bin/phpcs"
   )
 )
 
@@ -29,7 +29,7 @@ IF "%BIN_TARGET%"=="" (
   echo composer global require drupal/coder
   echo ------------------------
   echo to download it. Trying in current dir anyway....
-  SET BIN_TARGET="%~dp0vendor/squizlabs/php_codesniffer/scripts/phpcs"
+  SET BIN_TARGET="%~dp0vendor/squizlabs/php_codesniffer/bin/phpcs"
 )
 
 REM Use latest PHP version we have.
