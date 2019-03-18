@@ -55,7 +55,13 @@ export COLUMNS=$(tput cols)
 ## Set COMPOSER_HOME if not already set try dev desktop one.
 if [ -z ${COMPOSER_HOME+x} ]; then
   ## If file exists
-  if [ -f "$USERPROFILE/AppData/Roaming/Composer/vendor/drush/drush/drush" ]; then
+  if [ -f "$USERPROFILE/AppData/Roaming/Composer/vendor/bin/drush.phar" ]; then
+    ## Run drushlauncher script.
+    BIN_TARGET="$USERPROFILE/AppData/Roaming/Composer/vendor/bin/drush.phar"
+  elif [ -f "$MY_SCRIPT_DIR/drush.phar" ]; then
+     ## Run drushlauncher script
+    BIN_TARGET="$MY_SCRIPT_DIR/drush.phar"
+  elif [ -f "$USERPROFILE/AppData/Roaming/Composer/vendor/drush/drush/drush" ]; then
     ## Run drush php script.
     ## Note: not using "drush.php" script as it fails on updb with file/volume incorrect error.
     BIN_TARGET="$USERPROFILE/AppData/Roaming/Composer/vendor/drush/drush/drush"
@@ -64,7 +70,9 @@ if [ -z ${COMPOSER_HOME+x} ]; then
     BIN_TARGET="$MY_SCRIPT_DIR/vendor/drush/drush/drush"
   fi
 else
-  if [ -f "$COMPOSER_HOME/vendor/drush/drush/drush" ]; then
+  if [ -f "$COMPOSER_HOME/vendor/bin/drush.phar" ]; then
+    BIN_TARGET="$COMPOSER_HOME/vendor/bin/drush.phar"
+  elif [ -f "$COMPOSER_HOME/vendor/drush/drush/drush" ]; then
     BIN_TARGET="$COMPOSER_HOME/vendor/drush/drush/drush"
   fi
 fi

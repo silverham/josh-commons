@@ -39,7 +39,13 @@ IF EXIST "%USERPROFILE%\.acquia\DevDesktop\ssh-agent-params.bat" (
 IF "%COMPOSER_HOME%"=="" (
   REM echo NOT SET
   REM file exists
-  IF EXIST "%USERPROFILE%/AppData/Roaming/Composer/vendor/drush/drush/drush" (
+  IF EXIST "%USERPROFILE%/AppData/Roaming/Composer/vendor/bin/drush.phar" (
+    REM Run drush launcher.
+    SET BIN_TARGET="%USERPROFILE%/AppData/Roaming/Composer/vendor/bin/drush.phar"
+  ) ELSE IF EXIST "%~dp0drush.phar" (
+    REM Run drush launcher.
+    SET BIN_TARGET="%~dp0drush.phar" 
+  ) ELSE IF EXIST "%USERPROFILE%/AppData/Roaming/Composer/vendor/drush/drush/drush" (
     REM Run drush php script.
     REM Note: not using "drush" script as it fails on updb with file/volume incorrect error.
     SET BIN_TARGET="%USERPROFILE%/AppData/Roaming/Composer/vendor/drush/drush/drush"
@@ -48,7 +54,9 @@ IF "%COMPOSER_HOME%"=="" (
     SET BIN_TARGET="%~dp0vendor/drush/drush/drush"
   )
 ) ELSE (
-  IF EXIST "%COMPOSER_HOME%/vendor/drush/drush/drush" (
+  IF EXIST "%COMPOSER_HOME%/vendor/bin/drush.phar" (
+    SET BIN_TARGET="%COMPOSER_HOME%/vendor/bin/drush.phar"
+  ) ELSE IF EXIST "%COMPOSER_HOME%/vendor/drush/drush/drush" (
     SET BIN_TARGET="%COMPOSER_HOME%/vendor/drush/drush/drush"
   )
 )
