@@ -48,7 +48,7 @@ ssh-add /c/path/to/my/key/mykey.private
 ################
 # To use remove "#(uncomment)" from lines below.
 
-#(uncomment)export PATH="/c/$USERPROFILE/AppData/Roaming/Composer/vendor/bin:$PATH"
+#(uncomment)export PATH="$PATH:$USERPROFILE/AppData/Roaming/Composer/vendor/bin"
 
 # add ruby/sass to path
 export PATH=/c/Ruby23-x64/bin:$PATH
