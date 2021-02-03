@@ -5,34 +5,35 @@
 # Get current directory of this script.
 MY_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-## Set PHP_ID if not already set.
-if [ -z ${PHP_ID+x} ]; then
-  ## echo "var is unset";
-  ## If drupal less than 7.5 - then use php 5.6
-  ## export PHP_ID="php5_6"
-  
-  ## Use latest PHP version we have.
-  ## \ runs real ls, no alias, with / appended to folders
-  for i in `\ls "$(cd "$MY_SCRIPT_DIR" && cd .. && pwd)" | grep "php[0-9]" | sort -rV`; do
-    export PHP_ID="$i"
-    break
-  done;
+## ## Set PHP_ID if not already set.
+## if [ -z ${PHP_ID+x} ]; then
+##  ## echo "var is unset";
+##  ## If drupal less than 7.5 - then use php 5.6
+##  ## export PHP_ID="php5_6"
+##
+##  ## Use latest PHP version we have.
+##  ## \ runs real ls, no alias, with / appended to folders
+##  for i in `\ls "$(cd "$MY_SCRIPT_DIR" && cd .. && pwd)" | grep "php[0-9]" | sort -rV`; do
+##    export PHP_ID="$i"
+##    break
+##  done;
+##
+## #else
+##  #echo "var is set to '$PHP_ID'";
+## fi
 
-#else
-  #echo "var is set to '$PHP_ID'";
+if [ -z ${PHP_ID+x} ]; then
+  export PHP_ID="xampp-7-1-64bit"
 fi
 
-## Set environmental variables
-## PATH is used for system(), exec() etc.
-
-export DEVDESKTOP_DRUPAL_SETTINGS_DIR=$USERPROFILE/.acquia/DevDesktop/DrupalSettings
-export PATH="/c/Program Files (x86)/DevDesktop/common/msys/bin:/c/Program Files (x86)/DevDesktop/$PHP_ID:/c/Program Files (x86)/DevDesktop/mysql/bin:"$PATH
+export PATH="/c/$PHP_ID/mysql/bin:$PATH"
+export PATH="/c/$PHP_ID/php:$PATH"
 
 ## Run the Dev Desktop SSH setup - optional for drush.
 ## Remove lines with 1 "#" to activate the call to bat file.
 ## You may want to edit the bat file and add a "at" symbol @ in front of each command,
 ## (or add "@echo off") up top for less verbose output.
-SSH_AGENT_PARAMS_FILE="$USERPROFILE/.acquia/DevDesktop/ssh-agent-params.bat"
+## SSH_AGENT_PARAMS_FILE="$USERPROFILE/.acquia/DevDesktop/ssh-agent-params.bat"
 
 ## If file exists.
 #if [ -f "$SSH_AGENT_PARAMS_FILE" ]; then
@@ -55,25 +56,27 @@ export COLUMNS=$(tput cols)
 ## Set COMPOSER_HOME if not already set try dev desktop one.
 if [ -z ${COMPOSER_HOME+x} ]; then
   ## If file exists
-  if [ -f "$USERPROFILE/AppData/Roaming/Composer/vendor/bin/drush.phar" ]; then
-    ## Run drushlauncher script.
-    BIN_TARGET="$USERPROFILE/AppData/Roaming/Composer/vendor/bin/drush.phar"
-  elif [ -f "$MY_SCRIPT_DIR/drush.phar" ]; then
-     ## Run drushlauncher script
-    BIN_TARGET="$MY_SCRIPT_DIR/drush.phar"
-  elif [ -f "$USERPROFILE/AppData/Roaming/Composer/vendor/drush/drush/drush" ]; then
+##  if [ -f "$USERPROFILE/AppData/Roaming/Composer/vendor/bin/drush.phar" ]; then
+##    ## Run drushlauncher script.
+##    BIN_TARGET="$USERPROFILE/AppData/Roaming/Composer/vendor/bin/drush.phar"
+##  elif [ -f "$MY_SCRIPT_DIR/drush.phar" ]; then
+##     ## Run drushlauncher script
+##    BIN_TARGET="$MY_SCRIPT_DIR/drush.phar"
+##  el
+  if [ -f "$USERPROFILE/AppData/Roaming/Composer/vendor/drush/drush/drush.php" ]; then
     ## Run drush php script.
-    ## Note: not using "drush.php" script as it fails on updb with file/volume incorrect error.
-    BIN_TARGET="$USERPROFILE/AppData/Roaming/Composer/vendor/drush/drush/drush"
-  elif [ -f "$MY_SCRIPT_DIR/vendor/drush/drush/drush" ]; then
+    ## Note:  "drush.php" script might fail on updb with file/volume incorrect error.
+    BIN_TARGET="$USERPROFILE/AppData/Roaming/Composer/vendor/drush/drush/drush.php"
+  elif [ -f "$MY_SCRIPT_DIR/vendor/drush/drush/drush.php" ]; then
     ## fallback to devdesktop drush.php
-    BIN_TARGET="$MY_SCRIPT_DIR/vendor/drush/drush/drush"
+    BIN_TARGET="$MY_SCRIPT_DIR/vendor/drush/drush/drush.php"
   fi
 else
-  if [ -f "$COMPOSER_HOME/vendor/bin/drush.phar" ]; then
-    BIN_TARGET="$COMPOSER_HOME/vendor/bin/drush.phar"
-  elif [ -f "$COMPOSER_HOME/vendor/drush/drush/drush" ]; then
-    BIN_TARGET="$COMPOSER_HOME/vendor/drush/drush/drush"
+##  if [ -f "$COMPOSER_HOME/vendor/bin/drush.phar" ]; then
+##    BIN_TARGET="$COMPOSER_HOME/vendor/bin/drush.phar"
+##  el
+  if [ -f "$COMPOSER_HOME/vendor/drush/drush/drush.php" ]; then
+    BIN_TARGET="$COMPOSER_HOME/vendor/drush/drush/drush.php"
   fi
 fi
 
@@ -93,7 +96,8 @@ if !(type "php.exe" &> /dev/null); then
   echo Available folder names are: \(export PHP_ID=foldername\)
   # Start with d is a folder
   # Match php_NUM_NUM
-  ls "$(cd "$MY_SCRIPT_DIR" && cd .. && pwd)" -l | grep ^d | grep php[0-9]_[0-9]
+  # ls "$(cd "$MY_SCRIPT_DIR" && cd .. && pwd)" -l | grep ^d | grep php[0-9]_[0-9]
+  find /c/ -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | grep ^xampp
   # Exit with error code 1
   exit 1
 else

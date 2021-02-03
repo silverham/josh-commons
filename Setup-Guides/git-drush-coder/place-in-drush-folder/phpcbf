@@ -9,6 +9,29 @@
 # Get current directory of this script.
 MY_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+## ## Set PHP_ID if not already set.
+## if [ -z ${PHP_ID+x} ]; then
+##  ## echo "var is unset";
+##  ## If drupal less than 7.5 - then use php 5.6
+##  ## export PHP_ID="php5_6"
+##
+##  ## Use latest PHP version we have.
+##  ## \ runs real ls, no alias, with / appended to folders
+##  for i in `\ls "$(cd "$MY_SCRIPT_DIR" && cd .. && pwd)" | grep "php[0-9]" | sort -rV`; do
+##    export PHP_ID="$i"
+##    break
+##  done;
+##
+## #else
+##  #echo "var is set to '$PHP_ID'";
+## fi
+
+if [ -z ${PHP_ID+x} ]; then
+  export PHP_ID="xampp-7-1-64bit"
+fi
+
+export PATH="/c/$PHP_ID/php:$PATH"
+
 ## Set COMPOSER_HOME if not already set try dev desktop one.
 if [ -z ${COMPOSER_HOME+x} ]; then
   if [ -f "$USERPROFILE/AppData/Roaming/Composer/vendor/squizlabs/php_codesniffer/bin/phpcbf" ]; then
@@ -34,40 +57,13 @@ if [ -z ${dir+x} ]; then
   dir=$(d=${0%[/\\]*}; cd "$d"; cd "./vendor/squizlabs/php_codesniffer/bin" && pwd)
 fi
 
-## Set PHP_ID if not already set.
-if [ -z ${PHP_ID+x} ]; then
-  ## echo "var is unset";
-  ## If drupal less than 7.5 - then use php 5.6
-  ## export PHP_ID="php5_6"
-  
-  ## Use latest PHP version we have.
-  ## \ runs real ls, no alias, with / appended to folders
-  for i in `\ls "$(cd "$MY_SCRIPT_DIR" && cd .. && pwd)" | grep "php[0-9]" | sort -rV`; do
-    export PHP_ID="$i"
-    break
-  done;
-
-#else
-  #echo "var is set to '$PHP_ID'";
-fi
-
-# See if we are running in Cygwin by checking for cygpath program
-if command -v 'cygpath' >/dev/null 2>&1; then
-	# Cygwin paths start with /cygdrive/ which will break windows PHP,
-	# so we need to translate the dir path to windows format. However
-	# we could be using cygwin PHP which does not require this, so we
-	# test if the path to PHP starts with /cygdrive/ rather than /usr/bin
-	if [[ $(which php) == /cygdrive/* ]]; then
-		dir=$(cygpath -m "$dir");
-	fi
-fi
-
 if !(type "php.exe" &> /dev/null); then
   echo php.exe was not found.
   echo Available folder names are: \(export PHP_ID=foldername\)
   # Start with d is a folder
   # Match php_NUM_NUM
-  ls "$(cd "$MY_SCRIPT_DIR" && cd .. && pwd)" -l | grep ^d | grep php[0-9]_[0-9]
+  # ls "$(cd "$MY_SCRIPT_DIR" && cd .. && pwd)" -l | grep ^d | grep php[0-9]_[0-9]
+  find /c/ -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | grep ^xampp
   # Exit with error code 1
   exit 1
 fi
